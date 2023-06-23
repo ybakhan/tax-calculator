@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  tax-calculator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: service
+    depends_on:
+      - interview-test-server
+    ports:
+      - 8081:8081
+
+  integration-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: integration-test
+    environment:
+      - INTERVIEW_SERVER=http://interview-test-server:5000
+      - TAX_CALCULATOR_SERVER=http://tax-calculator:8081
+    depends_on:
+      - interview-test-server
+      - tax-calculator
+
+  interview-test-server:
+    image: ptsdocker16/interview-test-server
+    init: true
+    restart: always
+    ports:
+      - 5000:5000

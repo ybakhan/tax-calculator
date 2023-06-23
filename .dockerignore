@@ -1,0 +1,10 @@
+# Ignore all files that start with a dot.
+.*
+*.out
+*.html
+bin
+Dockerfile
+.dockerignore
+Makefile
+Readme.md
+docker-compose.yml

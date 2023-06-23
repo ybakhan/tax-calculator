@@ -1,0 +1,9 @@
+port: 8081
+interviewServer:
+  baseUrl: http://interview-test-server:5000
+httpClient:
+  retry:
+    max: 5
+    wait:
+      minSeconds: 1
+      maxSeconds: 5
