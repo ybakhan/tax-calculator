@@ -9,7 +9,7 @@ import (
 
 	"github.com/go-kit/kit/log"
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/ybakhan/tax-calculator/taxclient"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 //	@title			Tax Calculator API
@@ -28,7 +28,7 @@ func main() {
 	logger.Log("msg", "tax calculator started", "configuration", &config)
 
 	httpClient := initializeHTTPClient(config)
-	taxClient := taxclient.InitializeTaxClient(config.InterviewServer.BaseURL, httpClient, logger)
+	taxClient := taxbracket.InitializeBracketClient(config.InterviewServer.BaseURL, httpClient, logger)
 
 	listenAddress := fmt.Sprintf(":%d", config.Port)
 	server := &taxServer{listenAddress, taxClient, logger}

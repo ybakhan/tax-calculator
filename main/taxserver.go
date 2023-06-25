@@ -12,8 +12,8 @@ import (
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 	_ "github.com/ybakhan/tax-calculator/docs"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 	"github.com/ybakhan/tax-calculator/taxcalculator"
-	"github.com/ybakhan/tax-calculator/taxclient"
 )
 
 // Start starts rest api server that handles tax calculation requests
@@ -41,16 +41,16 @@ func (s *taxServer) handleTaxes(w http.ResponseWriter, r *http.Request) (int, er
 
 // handleGetTaxes handles get taxes api call go doc
 //
-//		@Summary		calculate taxes
-//		@Description	calculate taxes for given a salary and tax year
-//		@Tags			taxes
-//		@Produce		json
-//		@Param			year	path		int	 true	"tax year"
-//	 	@Param          s       query       int  true   "salary"
-//		@Success		200		{object}	taxcalculator.TaxCalculation
-//		@Failure		404		{object}	taxServerResponse
-//		@Failure		500		{object}	taxServerError
-//		@Router			/tax/{year} [get]
+//	@Summary		calculate taxes
+//	@Description	calculate taxes for given a salary and tax year
+//	@Tags			taxes
+//	@Produce		json
+//	@Param			year	path		int	true	"tax year"
+//	@Param			s		query		int	true	"salary"
+//	@Success		200		{object}	taxcalculator.TaxCalculation
+//	@Failure		404		{object}	taxServerResponse
+//	@Failure		500		{object}	taxServerError
+//	@Router			/tax/{year} [get]
 func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i int, err error) {
 	defer func() {
 		if err != nil {
@@ -79,11 +79,11 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 		return http.StatusInternalServerError, err
 	}
 
-	if response == taxclient.Failed {
+	if response == taxbracket.Failed {
 		return http.StatusInternalServerError, fmt.Errorf("get taxes failed year %s", year)
 	}
 
-	if response == taxclient.NotFound {
+	if response == taxbracket.NotFound {
 		notFoundMessage := fmt.Sprintf("tax year not found %s", year)
 		s.Logger.Log("requestID", getRequestID(ctx), "msg", notFoundMessage)
 

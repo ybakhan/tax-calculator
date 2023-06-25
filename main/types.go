@@ -4,13 +4,13 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
-	"github.com/ybakhan/tax-calculator/taxclient"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 // taxServer represents api server that handles requests to calculate taxes
 type taxServer struct {
 	ListenAddress string
-	TaxClient     taxclient.TaxClient
+	TaxClient     taxbracket.BracketClient
 	Logger        log.Logger
 }
 

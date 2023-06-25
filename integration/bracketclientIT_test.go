@@ -13,7 +13,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
-	"github.com/ybakhan/tax-calculator/taxclient"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 func TestGetBrackets(t *testing.T) {
@@ -29,27 +29,27 @@ func TestGetBrackets(t *testing.T) {
 	}
 
 	logger := log.NewNopLogger()
-	taxClient := taxclient.InitializeTaxClient(os.Getenv("INTERVIEW_SERVER"), httpClient, logger)
+	bracketClient := taxbracket.InitializeBracketClient(os.Getenv("INTERVIEW_SERVER"), httpClient, logger)
 
 	tests := map[string]struct {
 		Year             string
-		ExpectedResponse taxclient.GetBracketsResponse
+		ExpectedResponse taxbracket.GetBracketsResponse
 		ExpectedBrackets int
 	}{
 		"tax bracket not found": {
 			Year:             "2018",
-			ExpectedResponse: taxclient.NotFound,
+			ExpectedResponse: taxbracket.NotFound,
 		},
 		"get brackets": {
 			Year:             "2022",
-			ExpectedResponse: taxclient.Found,
+			ExpectedResponse: taxbracket.Found,
 			ExpectedBrackets: 5,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			taxBrackets, response, err := taxClient.GetBrackets(context.Background(), test.Year)
+			taxBrackets, response, err := bracketClient.GetBrackets(context.Background(), test.Year)
 			assert.Equal(t, test.ExpectedBrackets, len(taxBrackets))
 			assert.Equal(t, test.ExpectedResponse, response)
 			assert.Nil(t, err)

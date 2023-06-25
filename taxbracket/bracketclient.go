@@ -1,4 +1,4 @@
-package taxclient
+package taxbracket
 
 import (
 	"context"
@@ -14,22 +14,22 @@ import (
 
 const bracketsResourcePath = "/tax-calculator/tax-year/"
 
-func InitializeTaxClient(baseURL string, client retryableHTTPClient, logger log.Logger) TaxClient {
-	taxBracketsURL, err := url.JoinPath(baseURL, bracketsResourcePath)
+func InitializeBracketClient(baseURL string, client retryableHTTPClient, logger log.Logger) BracketClient {
+	bracketsURL, err := url.JoinPath(baseURL, bracketsResourcePath)
 	if err != nil {
-		err = fmt.Errorf("error intializing tax client: %w", err)
+		err = fmt.Errorf("error intializing tax bracket client: %w", err)
 		panic(err)
 	}
 
-	return &taxClient{
-		taxBracketsURL,
+	return &bracketClient{
+		bracketsURL,
 		client,
 		logger,
 	}
 }
 
 // GetBrackets gets tax brackets from the interview server
-func (c *taxClient) GetBrackets(ctx context.Context, year string) ([]Bracket, GetBracketsResponse, error) {
+func (c *bracketClient) GetBrackets(ctx context.Context, year string) ([]Bracket, GetBracketsResponse, error) {
 	brackets, response, err := c.getBrackets(ctx, year)
 	if err != nil {
 		c.logger.Log("requestID", getRequestID(ctx), "error", err)
@@ -37,8 +37,8 @@ func (c *taxClient) GetBrackets(ctx context.Context, year string) ([]Bracket, Ge
 	return brackets, response, err
 }
 
-func (c *taxClient) getBrackets(ctx context.Context, year string) ([]Bracket, GetBracketsResponse, error) {
-	taxBracketsURL, err := url.JoinPath(c.taxBracketsURL, year)
+func (c *bracketClient) getBrackets(ctx context.Context, year string) ([]Bracket, GetBracketsResponse, error) {
+	taxBracketsURL, err := url.JoinPath(c.bracketsURL, year)
 	if err != nil {
 		return nil, Failed, err
 	}

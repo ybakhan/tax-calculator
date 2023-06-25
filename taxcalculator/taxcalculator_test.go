@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/ybakhan/tax-calculator/taxclient"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 	"github.com/ybakhan/tax-calculator/testcommon"
 )
 
@@ -101,13 +101,13 @@ func TestCalculate(t *testing.T) {
 
 func TestCalculateByBracket(t *testing.T) {
 	tests := map[string]struct {
-		Bracket     taxclient.Bracket
+		Bracket     taxbracket.Bracket
 		Salary      float32
 		ExpectedTax float32
 	}{
 		"first bracket": {
 			Salary: 55000,
-			Bracket: taxclient.Bracket{
+			Bracket: taxbracket.Bracket{
 				Min:  0,
 				Max:  50197,
 				Rate: 0.15,
@@ -116,7 +116,7 @@ func TestCalculateByBracket(t *testing.T) {
 		},
 		"second bracket": {
 			Salary: 55000,
-			Bracket: taxclient.Bracket{
+			Bracket: taxbracket.Bracket{
 				Min:  50197,
 				Max:  100392,
 				Rate: 0.205,
@@ -125,7 +125,7 @@ func TestCalculateByBracket(t *testing.T) {
 		},
 		"out of bracket": {
 			Salary: 50197,
-			Bracket: taxclient.Bracket{
+			Bracket: taxbracket.Bracket{
 				Min:  50197,
 				Max:  100392,
 				Rate: 0.205,
@@ -134,7 +134,7 @@ func TestCalculateByBracket(t *testing.T) {
 		},
 		"bracket boundary": {
 			Salary: 50197,
-			Bracket: taxclient.Bracket{
+			Bracket: taxbracket.Bracket{
 				Min:  0,
 				Max:  50197,
 				Rate: 0.15,

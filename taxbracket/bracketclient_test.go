@@ -1,5 +1,5 @@
 // Package taxclient provides functions to access resources from interview server
-package taxclient
+package taxbracket
 
 import (
 	"context"
@@ -18,8 +18,8 @@ import (
 func TestInitializeTaxClient(t *testing.T) {
 	logger := log.NewNopLogger()
 	httpClient := retryablehttp.NewClient()
-	taxClient := InitializeTaxClient("http://interview-test-server:5000", httpClient, logger)
-	assert.NotNil(t, taxClient)
+	bracketClient := InitializeBracketClient("http://interview-test-server:5000", httpClient, logger)
+	assert.NotNil(t, bracketClient)
 }
 
 func TestGetBrackets(t *testing.T) {
@@ -76,9 +76,9 @@ func TestGetBrackets(t *testing.T) {
 				On("Do", mock.AnythingOfType("*retryablehttp.Request")).
 				Return(test.HTTPResponse, test.HTTPError)
 
-			client := InitializeTaxClient("http://interview-test-server:5000", mockHTTPClient, logger)
-			taxBrackets, response, err := client.GetBrackets(context.Background(), "2022")
-			assert.Equal(t, test.ExpectedBrackets, taxBrackets)
+			client := InitializeBracketClient("http://interview-test-server:5000", mockHTTPClient, logger)
+			brackets, response, err := client.GetBrackets(context.Background(), "2022")
+			assert.Equal(t, test.ExpectedBrackets, brackets)
 			assert.Equal(t, test.ExpectedResponse, response)
 
 			if test.ReturnsError {

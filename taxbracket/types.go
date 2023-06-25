@@ -1,4 +1,4 @@
-package taxclient
+package taxbracket
 
 import (
 	"context"
@@ -17,7 +17,7 @@ const (
 	Failed
 )
 
-type TaxClient interface {
+type BracketClient interface {
 	GetBrackets(context.Context, string) ([]Bracket, GetBracketsResponse, error)
 }
 
@@ -25,10 +25,10 @@ type retryableHTTPClient interface {
 	Do(req *retryablehttp.Request) (*http.Response, error)
 }
 
-type taxClient struct {
-	taxBracketsURL string
-	client         retryableHTTPClient
-	logger         log.Logger
+type bracketClient struct {
+	bracketsURL string
+	client      retryableHTTPClient
+	logger      log.Logger
 }
 
 // Bracket represents a tax bracket

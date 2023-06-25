@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/ybakhan/tax-calculator/taxclient"
+	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 // Calculate computes taxes for a salary given tax brackets
-func Calculate(brackets []taxclient.Bracket, salary float32) *TaxCalculation {
+func Calculate(brackets []taxbracket.Bracket, salary float32) *TaxCalculation {
 	if salary <= 0 {
 		return nil
 	}
@@ -38,7 +38,7 @@ func Calculate(brackets []taxclient.Bracket, salary float32) *TaxCalculation {
 
 // calculateBracketTax calculates braket tax for a given salary
 // result is rounded to 2 decimal places
-func calculateBracketTax(bracket taxclient.Bracket, salary float32) float32 {
+func calculateBracketTax(bracket taxbracket.Bracket, salary float32) float32 {
 	if salary == 0 || salary <= bracket.Min {
 		return 0
 	}
