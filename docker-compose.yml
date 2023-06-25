@@ -8,6 +8,7 @@ services:
       target: service
     depends_on:
       - interview-test-server
+      - tax-bracket-cache
     ports:
       - 8080:8080
 
@@ -22,6 +23,7 @@ services:
     depends_on:
       - interview-test-server
       - tax-calculator
+      - tax-bracket-cache
 
   interview-test-server:
     image: ptsdocker16/interview-test-server
@@ -29,3 +31,9 @@ services:
     restart: always
     ports:
       - 5000:5000
+
+  tax-bracket-cache:
+    image: redis:7.0.11-alpine
+    ports:
+      - 6379:6379
+    command: --requirepass bD5%4a#9sRv7

@@ -8,15 +8,23 @@ import (
 
 // Config represents configurable properties of tax-calculator
 type Config struct {
-	Port            int `yaml:"port"`
+	Port int `yaml:"port"`
+
+	Redis struct {
+		Address  string `yaml:"address"`
+		Password string `yaml:"password"`
+	} `yaml:"redis"`
+
 	InterviewServer struct {
 		BaseURL string `yaml:"baseUrl"`
 	} `yaml:"interviewServer"`
 
 	HTTPClient struct {
 		TimeoutMs int `yaml:"timeoutMs"`
-		Retry     struct {
-			Max  int `yaml:"max"`
+
+		Retry struct {
+			Max int `yaml:"max"`
+
 			Wait struct {
 				MinMs int `yaml:"minMs"`
 				MaxMs int `yaml:"maxMs"`

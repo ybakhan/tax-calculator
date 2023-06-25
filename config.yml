@@ -1,6 +1,9 @@
 port: 8080
 interviewServer:
   baseUrl: http://interview-test-server:5000
+redis:
+  address: tax-bracket-cache:6379
+  password: bD5%4a#9sRv7
 httpClient:
   timeoutMs: 5000
   retry:

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-redis/redis/v8"
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
@@ -11,6 +12,7 @@ import (
 type taxServer struct {
 	ListenAddress string
 	TaxClient     taxbracket.BracketClient
+	Redis         *redis.Client
 	Logger        log.Logger
 }
 
