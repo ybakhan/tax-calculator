@@ -5,7 +5,6 @@ package integration
 
 import (
 	"context"
-	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -18,15 +17,10 @@ import (
 
 func TestGetBrackets(t *testing.T) {
 	httpClient := retryablehttp.NewClient()
-	httpClient.RetryWaitMin = 1 * time.Second
-	httpClient.RetryWaitMax = 5 * time.Second
+	httpClient.HTTPClient.Timeout = 5000 * time.Millisecond
+	httpClient.RetryWaitMin = 1000 * time.Millisecond
+	httpClient.RetryWaitMax = 5000 * time.Millisecond
 	httpClient.RetryMax = 5
-	httpClient.CheckRetry = func(ctx context.Context, resp *http.Response, err error) (bool, error) {
-		if resp.StatusCode == http.StatusInternalServerError {
-			return true, nil
-		}
-		return false, nil
-	}
 
 	logger := log.NewNopLogger()
 	bracketClient := taxbracket.InitializeBracketClient(os.Getenv("INTERVIEW_SERVER"), httpClient, logger)

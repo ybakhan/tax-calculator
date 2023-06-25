@@ -14,11 +14,12 @@ type Config struct {
 	} `yaml:"interviewServer"`
 
 	HTTPClient struct {
-		Retry struct {
+		TimeoutMs int `yaml:"timeoutMs"`
+		Retry     struct {
 			Max  int `yaml:"max"`
 			Wait struct {
-				MinSeconds int `yaml:"minSeconds"`
-				MaxSeconds int `yaml:"maxSeconds"`
+				MinMs int `yaml:"minMs"`
+				MaxMs int `yaml:"maxMs"`
 			} `yaml:"wait"`
 		} `yaml:"retry"`
 	} `yaml:"httpClient"`

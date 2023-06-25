@@ -2,8 +2,9 @@ port: 8080
 interviewServer:
   baseUrl: http://interview-test-server:5000
 httpClient:
+  timeoutMs: 5000
   retry:
     max: 5
     wait:
-      minSeconds: 1
-      maxSeconds: 5
+      minMs: 1000
+      maxMs: 5000

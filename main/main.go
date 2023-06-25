@@ -1,9 +1,7 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
@@ -37,15 +35,9 @@ func main() {
 
 func initializeHTTPClient(config *Config) *retryablehttp.Client {
 	httpClient := retryablehttp.NewClient()
-	httpClient.RetryWaitMin = time.Duration(config.HTTPClient.Retry.Wait.MinSeconds) * time.Second
-	httpClient.RetryWaitMax = time.Duration(config.HTTPClient.Retry.Wait.MaxSeconds) * time.Second
+	httpClient.HTTPClient.Timeout = time.Duration(config.HTTPClient.TimeoutMs) * time.Millisecond
+	httpClient.RetryWaitMin = time.Duration(config.HTTPClient.Retry.Wait.MinMs) * time.Millisecond
+	httpClient.RetryWaitMax = time.Duration(config.HTTPClient.Retry.Wait.MaxMs) * time.Millisecond
 	httpClient.RetryMax = config.HTTPClient.Retry.Max
-
-	httpClient.CheckRetry = func(ctx context.Context, resp *http.Response, err error) (bool, error) {
-		if resp.StatusCode == http.StatusInternalServerError {
-			return true, nil
-		}
-		return false, nil
-	}
 	return httpClient
 }
