@@ -98,6 +98,10 @@ const docTemplate = `{
                     "type": "number",
                     "example": 0.15
                 },
+                "salary": {
+                    "type": "number",
+                    "example": 55000
+                },
                 "taxes_by_band": {
                     "type": "array",
                     "items": {

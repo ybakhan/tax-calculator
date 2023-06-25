@@ -22,6 +22,9 @@ definitions:
       effective_rate:
         example: 0.15
         type: number
+      salary:
+        example: 55000
+        type: number
       taxes_by_band:
         items:
           $ref: '#/definitions/taxcalculator.BracketTax'

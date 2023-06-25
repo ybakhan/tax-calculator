@@ -41,15 +41,16 @@ func (s *taxServer) handleTaxes(w http.ResponseWriter, r *http.Request) (int, er
 
 // handleGetTaxes handles get taxes api call go doc
 //
-//	@Summary		calculate taxes
-//	@Description	calculate taxes for given a salary and tax year
-//	@Tags			taxes
-//	@Produce		json
-//	@Param			year	path		string	true	"tax year"
-//	@Success		200		{object}	taxcalculator.TaxCalculation
-//	@Failure		404		{object}	taxServerResponse
-//	@Failure		500		{object}	taxServerError
-//	@Router			/tax/{year} [get]
+//		@Summary		calculate taxes
+//		@Description	calculate taxes for given a salary and tax year
+//		@Tags			taxes
+//		@Produce		json
+//		@Param			year	path		int	 true	"tax year"
+//	 	@Param          s       query       int  true   "salary"
+//		@Success		200		{object}	taxcalculator.TaxCalculation
+//		@Failure		404		{object}	taxServerResponse
+//		@Failure		500		{object}	taxServerError
+//		@Router			/tax/{year} [get]
 func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i int, err error) {
 	defer func() {
 		if err != nil {
