@@ -86,7 +86,8 @@ const docTemplate = `{
                     "$ref": "#/definitions/taxclient.Bracket"
                 },
                 "tax": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 984.62
                 }
             }
         },
@@ -94,7 +95,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "effective_rate": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 0.15
                 },
                 "taxes_by_band": {
                     "type": "array",
@@ -103,7 +105,8 @@ const docTemplate = `{
                     }
                 },
                 "total_taxes": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 8514.17
                 }
             }
         },
@@ -111,13 +114,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "max": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 100392
                 },
                 "min": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 50197
                 },
                 "rate": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 0.205
                 }
             }
         }

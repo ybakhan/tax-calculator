@@ -33,9 +33,9 @@ type taxClient struct {
 
 // Bracket represents a tax bracket
 type Bracket struct {
-	Min  float32 `json:"min"`
-	Max  float32 `json:"max"`
-	Rate float32 `json:"rate"`
+	Min  float32 `json:"min" example:"50197"`
+	Max  float32 `json:"max" example:"100392"`
+	Rate float32 `json:"rate" example:"0.205"`
 }
 
 type Brackets struct {

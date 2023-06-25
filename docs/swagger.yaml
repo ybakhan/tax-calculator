@@ -14,26 +14,32 @@ definitions:
       band:
         $ref: '#/definitions/taxclient.Bracket'
       tax:
+        example: 984.62
         type: number
     type: object
   taxcalculator.TaxCalculation:
     properties:
       effective_rate:
+        example: 0.15
         type: number
       taxes_by_band:
         items:
           $ref: '#/definitions/taxcalculator.BracketTax'
         type: array
       total_taxes:
+        example: 8514.17
         type: number
     type: object
   taxclient.Bracket:
     properties:
       max:
+        example: 100392
         type: number
       min:
+        example: 50197
         type: number
       rate:
+        example: 0.205
         type: number
     type: object
 info:
