@@ -109,8 +109,8 @@ func (s *taxServer) makeHTTPHandlerFunc(f requestHandler) http.HandlerFunc {
 // writeJSON sets status header and
 // writes a reponse to a http response writer
 func writeJSON(w http.ResponseWriter, status int, response any) error {
-	w.WriteHeader(status)
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(response)
 }
 

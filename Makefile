@@ -3,6 +3,7 @@ build:
 
 run:
 	@docker-compose up --build tax-calculator
+	@docker-compose down
 
 test:
 	@go test ./... -v -count=1 -tags=unit
