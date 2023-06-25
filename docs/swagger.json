@@ -1,10 +1,17 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "REST API for calculating taxes",
+        "title": "Tax Calculator API",
+        "contact": {
+            "name": "Yasser Khan",
+            "url": "http://github.com/ybakhan",
+            "email": "ybakhan@gmail.com"
+        },
+        "version": "1.0"
     },
     "paths": {
-        "/tax/{year}}": {
+        "/tax/{year}": {
             "get": {
                 "description": "calculate taxes for given a salary and tax year",
                 "produces": [
@@ -70,7 +77,7 @@
                     "$ref": "#/definitions/taxclient.Bracket"
                 },
                 "tax": {
-                    "type": "string"
+                    "type": "number"
                 }
             }
         },
@@ -78,7 +85,7 @@
             "type": "object",
             "properties": {
                 "effective_rate": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "taxes_by_band": {
                     "type": "array",
@@ -87,7 +94,7 @@
                     }
                 },
                 "total_taxes": {
-                    "type": "string"
+                    "type": "number"
                 }
             }
         },

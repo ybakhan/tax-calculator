@@ -14,18 +14,18 @@ definitions:
       band:
         $ref: '#/definitions/taxclient.Bracket'
       tax:
-        type: string
+        type: number
     type: object
   taxcalculator.TaxCalculation:
     properties:
       effective_rate:
-        type: string
+        type: number
       taxes_by_band:
         items:
           $ref: '#/definitions/taxcalculator.BracketTax'
         type: array
       total_taxes:
-        type: string
+        type: number
     type: object
   taxclient.Bracket:
     properties:
@@ -37,9 +37,15 @@ definitions:
         type: number
     type: object
 info:
-  contact: {}
+  contact:
+    email: ybakhan@gmail.com
+    name: Yasser Khan
+    url: http://github.com/ybakhan
+  description: REST API for calculating taxes
+  title: Tax Calculator API
+  version: "1.0"
 paths:
-  /tax/{year}}:
+  /tax/{year}:
     get:
       description: calculate taxes for given a salary and tax year
       parameters:

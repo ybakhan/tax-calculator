@@ -10,13 +10,17 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Yasser Khan",
+            "url": "http://github.com/ybakhan",
+            "email": "ybakhan@gmail.com"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/tax/{year}}": {
+        "/tax/{year}": {
             "get": {
                 "description": "calculate taxes for given a salary and tax year",
                 "produces": [
@@ -82,7 +86,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/taxclient.Bracket"
                 },
                 "tax": {
-                    "type": "string"
+                    "type": "number"
                 }
             }
         },
@@ -90,7 +94,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "effective_rate": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "taxes_by_band": {
                     "type": "array",
@@ -99,7 +103,7 @@ const docTemplate = `{
                     }
                 },
                 "total_taxes": {
-                    "type": "string"
+                    "type": "number"
                 }
             }
         },
@@ -122,12 +126,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Tax Calculator API",
+	Description:      "REST API for calculating taxes",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
