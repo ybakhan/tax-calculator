@@ -58,3 +58,11 @@ e.g To get taxes for year 2022 and salary 80000 call
 ```plaintext 
 http://localhost:8080/tax/2022?s=80000
 ```
+
+## Swagger Documentation 
+
+To update swagger documentation, run the following command:
+
+```bash
+make swagger
+```

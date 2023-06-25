@@ -21,3 +21,6 @@ testIT-local:
 	@INTERVIEW_SERVER=http://localhost:5000 TAX_CALCULATOR_SERVER=http://localhost:8080 go test ./integration -tags=integration -v -count=1
 	@docker-compose down
 
+swagger:
+	@go install github.com/swaggo/swag/cmd/swag@latest
+	@swag init -g ./main/main.go -o ./docs
