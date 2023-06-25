@@ -32,10 +32,17 @@ const docTemplate = `{
                 "summary": "calculate taxes",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "tax year",
                         "name": "year",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "salary",
+                        "name": "s",
+                        "in": "query",
                         "required": true
                     }
                 ],

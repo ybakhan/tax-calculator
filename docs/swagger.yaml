@@ -62,7 +62,12 @@ paths:
         in: path
         name: year
         required: true
-        type: string
+        type: integer
+      - description: salary
+        in: query
+        name: s
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

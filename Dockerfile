@@ -24,7 +24,7 @@ COPY --from=builder /app/tax-calculator .
 COPY --from=builder /app/config.yml .
 
 # Expose the port the server will be listening on
-EXPOSE 8081
+EXPOSE 8080
 CMD ["./tax-calculator"]
 
 # Build the integration test image

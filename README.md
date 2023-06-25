@@ -50,11 +50,11 @@ make run
 To get taxes for a year and salary call the following api 
 
 ```plaintext 
-http://localhost:8081/tax/{year}?s={salary}
+http://localhost:8080/tax/{year}?s={salary}
 ```
 
 e.g To get taxes for year 2022 and salary 80000 call
 
 ```plaintext 
-http://localhost:8081/tax/2022?s=80000
+http://localhost:8080/tax/2022?s=80000
 ```

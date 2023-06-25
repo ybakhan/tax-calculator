@@ -14,7 +14,10 @@ coverage:
 
 testIT:
 	@docker-compose up --build integration-test
+	@docker-compose down
 
 testIT-local:
-	@INTERVIEW_SERVER=http://localhost:5000 TAX_CALCULATOR_SERVER=http://localhost:8081 go test ./integration -tags=integration -v -count=1
+	@docker-compose up --build tax-calculator -d
+	@INTERVIEW_SERVER=http://localhost:5000 TAX_CALCULATOR_SERVER=http://localhost:8080 go test ./integration -tags=integration -v -count=1
+	@docker-compose down
 

@@ -9,7 +9,7 @@ services:
     depends_on:
       - interview-test-server
     ports:
-      - 8081:8081
+      - 8080:8080
 
   integration-test:
     build:
@@ -18,7 +18,7 @@ services:
       target: integration-test
     environment:
       - INTERVIEW_SERVER=http://interview-test-server:5000
-      - TAX_CALCULATOR_SERVER=http://tax-calculator:8081
+      - TAX_CALCULATOR_SERVER=http://tax-calculator:8080
     depends_on:
       - interview-test-server
       - tax-calculator
