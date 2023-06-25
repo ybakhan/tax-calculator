@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -77,10 +76,10 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 
 	ctx := r.Context()
 	var taxes *taxcalculator.TaxCalculation
-	if brackets := s.getBracketsFromCache(ctx, year); brackets != nil {
+	if brackets := s.BracketCache.Get(ctx, year); brackets != nil {
 		taxes = taxcalculator.Calculate(brackets, float32(salaryF))
 	} else {
-		brackets, response, err := s.TaxClient.GetBrackets(ctx, year)
+		brackets, response, err := s.BracketClient.GetBrackets(ctx, year)
 		if err != nil {
 			return http.StatusInternalServerError, err
 		}
@@ -97,51 +96,13 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 			return http.StatusNotFound, nil
 		}
 
-		s.saveBracketsToCache(ctx, year, brackets)
+		s.BracketCache.Save(ctx, year, brackets)
 		taxes = taxcalculator.Calculate(brackets, float32(salaryF))
 	}
 
 	s.Logger.Log("requestID", getRequestID(ctx), "msg", "calculated taxes", "year", year, "salary", salaryF, "taxes", taxes)
 	writeJSON(w, http.StatusOK, taxes)
 	return http.StatusOK, nil
-}
-
-func (s *taxServer) getBracketsFromCache(ctx context.Context, year string) []taxbracket.Bracket {
-	bracketsStr, err := s.Redis.Get(ctx, year).Result()
-	if err != nil || err == redis.Nil {
-		return nil
-	}
-
-	var taxbrackets []taxbracket.Bracket
-	err = json.Unmarshal([]byte(bracketsStr), &taxbrackets)
-	if err != nil {
-		s.Logger.Log("error", err, "message", "error getting tax brackets from cache", "year", year)
-		return nil
-	}
-
-	s.Logger.Log("message", "tax brackets retrieved from cache", "taxbrackets", taxbrackets)
-	return taxbrackets
-}
-
-func (s *taxServer) saveBracketsToCache(ctx context.Context, year string, brackets []taxbracket.Bracket) (err error) {
-	defer func() {
-		if err != nil {
-			s.Logger.Log("error", err, "message", "error saving tax brackets to cache", "year", year, "taxbrackets", brackets)
-		}
-	}()
-
-	jsonBytes, err := json.Marshal(brackets)
-	if err != nil {
-		return err
-	}
-
-	err = s.Redis.Set(context.Background(), year, jsonBytes, 0).Err()
-	if err != nil {
-		return err
-	}
-
-	s.Logger.Log("message", "tax brackets saved in cache", "year", year, "taxbrackets", brackets)
-	return nil
 }
 
 func (s *taxServer) makeHTTPHandlerFunc(f requestHandler) http.HandlerFunc {

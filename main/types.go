@@ -4,15 +4,15 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
-	"github.com/go-redis/redis/v8"
+	"github.com/ybakhan/tax-calculator/cache"
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 // taxServer represents api server that handles requests to calculate taxes
 type taxServer struct {
 	ListenAddress string
-	TaxClient     taxbracket.BracketClient
-	Redis         *redis.Client
+	BracketClient taxbracket.BracketClient
+	BracketCache  cache.BracketCache
 	Logger        log.Logger
 }
 
