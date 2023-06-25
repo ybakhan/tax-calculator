@@ -18,68 +18,68 @@ func TestCalculate(t *testing.T) {
 		"calculate over one band": {
 			50196,
 			TaxCalculation{
-				"7529.40",
-				"0.15",
+				7529.40,
+				0.15,
 				[]BracketTax{
-					{"7529.40", taxBrackets.Data[0]},
+					{7529.40, taxBrackets.Data[0]},
 				},
 			},
 		},
 		"calculate over one band with boundary salary": {
 			50197,
 			TaxCalculation{
-				"7529.55",
-				"0.15",
+				7529.55,
+				0.15,
 				[]BracketTax{
-					{"7529.55", taxBrackets.Data[0]},
+					{7529.55, taxBrackets.Data[0]},
 				},
 			},
 		},
 		"calculate over two bands": {
 			55000,
 			TaxCalculation{
-				"8514.17",
-				"0.15",
+				8514.17,
+				0.15,
 				[]BracketTax{
-					{"7529.55", taxBrackets.Data[0]},
-					{"984.62", taxBrackets.Data[1]},
+					{7529.55, taxBrackets.Data[0]},
+					{984.62, taxBrackets.Data[1]},
 				},
 			},
 		},
 		"calculate over two bands with boundary salary": {
 			100392,
 			TaxCalculation{
-				"17819.52",
-				"0.18",
+				17819.52,
+				0.18,
 				[]BracketTax{
-					{"7529.55", taxBrackets.Data[0]},
-					{"10289.97", taxBrackets.Data[1]},
+					{7529.55, taxBrackets.Data[0]},
+					{10289.97, taxBrackets.Data[1]},
 				},
 			},
 		},
 		"calculate over three bands": {
 			100393,
 			TaxCalculation{
-				"17819.78",
-				"0.18",
+				17819.78,
+				0.18,
 				[]BracketTax{
-					{"7529.55", taxBrackets.Data[0]},
-					{"10289.97", taxBrackets.Data[1]},
-					{"0.26", taxBrackets.Data[2]},
+					{7529.55, taxBrackets.Data[0]},
+					{10289.97, taxBrackets.Data[1]},
+					{0.26, taxBrackets.Data[2]},
 				},
 			},
 		},
 		"calculate over five bands": {
 			221709,
 			TaxCalculation{
-				"51344.50",
-				"0.23",
+				51344.50,
+				0.23,
 				[]BracketTax{
-					{"7529.55", taxBrackets.Data[0]},
-					{"10289.97", taxBrackets.Data[1]},
-					{"14360.58", taxBrackets.Data[2]},
-					{"19164.07", taxBrackets.Data[3]},
-					{"0.33", taxBrackets.Data[4]},
+					{7529.55, taxBrackets.Data[0]},
+					{10289.97, taxBrackets.Data[1]},
+					{14360.58, taxBrackets.Data[2]},
+					{19164.07, taxBrackets.Data[3]},
+					{0.33, taxBrackets.Data[4]},
 				},
 			},
 		},

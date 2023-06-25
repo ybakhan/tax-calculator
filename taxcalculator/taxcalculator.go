@@ -20,7 +20,7 @@ func Calculate(brackets []taxclient.Bracket, salary float32) *TaxCalculation {
 		tax := calculateBracketTax(bracket, salary)
 		if tax != 0 {
 			taxByBand = append(taxByBand, BracketTax{
-				format(tax),
+				tax,
 				bracket,
 			})
 			total += tax
@@ -28,13 +28,15 @@ func Calculate(brackets []taxclient.Bracket, salary float32) *TaxCalculation {
 	}
 
 	answer := &TaxCalculation{
-		format(total),
-		format(round(total / salary)),
+		total,
+		round(total / salary),
 		taxByBand,
 	}
 	return answer
 }
 
+// calculateBracketTax calculates braket tax for a given salary
+// result is rounded to 2 decimal places
 func calculateBracketTax(bracket taxclient.Bracket, salary float32) float32 {
 	if salary == 0 || salary <= bracket.Min {
 		return 0
