@@ -6,6 +6,7 @@ import (
 
 // TaxCalculation represents tax calculation for a year and salary
 type TaxCalculation struct {
+	Salary        float32      `json:"salary" example:"55000"`
 	TotalTaxes    float32      `json:"total_taxes" example:"8514.17"`
 	EffectiveRate float32      `json:"effective_rate" example:"0.15"`
 	BracketTaxes  []BracketTax `json:"taxes_by_band"`

@@ -27,11 +27,12 @@ func TestGetTaxes(t *testing.T) {
 		"calculate over one band": {
 			"50196",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "7529.40",
-				EffectiveRate: "0.15",
+				Salary:        50196,
+				TotalTaxes:    7529.40,
+				EffectiveRate: 0.15,
 				BracketTaxes: []taxcalculator.BracketTax{
 					{
-						Tax:     "7529.40",
+						Tax:     7529.40,
 						Bracket: taxBrackets.Data[0],
 					},
 				},
@@ -40,58 +41,63 @@ func TestGetTaxes(t *testing.T) {
 		"calculate over one band boundary": {
 			"50197",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "7529.55",
-				EffectiveRate: "0.15",
+				Salary:        50197,
+				TotalTaxes:    7529.55,
+				EffectiveRate: 0.15,
 				BracketTaxes: []taxcalculator.BracketTax{
-					{Tax: "7529.55", Bracket: taxBrackets.Data[0]},
+					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
 				},
 			},
 		},
 		"calculate over two bands": {
 			"55000",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "8514.17",
-				EffectiveRate: "0.15",
+				Salary:        55000,
+				TotalTaxes:    8514.17,
+				EffectiveRate: 0.15,
 				BracketTaxes: []taxcalculator.BracketTax{
-					{Tax: "7529.55", Bracket: taxBrackets.Data[0]},
-					{Tax: "984.62", Bracket: taxBrackets.Data[1]},
+					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
+					{Tax: 984.62, Bracket: taxBrackets.Data[1]},
 				},
 			},
 		},
 		"calculate over two bands boundary": {
 			"100392",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "17819.52",
-				EffectiveRate: "0.18",
+				Salary:        100392,
+				TotalTaxes:    17819.52,
+				EffectiveRate: 0.18,
 				BracketTaxes: []taxcalculator.BracketTax{
-					{Tax: "7529.55", Bracket: taxBrackets.Data[0]},
-					{Tax: "10289.97", Bracket: taxBrackets.Data[1]},
+					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
+					{Tax: 10289.97, Bracket: taxBrackets.Data[1]},
 				},
 			},
 		},
 		"calculate over three bands": {
 			"100393",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "17819.78",
-				EffectiveRate: "0.18",
+				Salary:        100393,
+				TotalTaxes:    17819.78,
+				EffectiveRate: 0.18,
 				BracketTaxes: []taxcalculator.BracketTax{
-					{Tax: "7529.55", Bracket: taxBrackets.Data[0]},
-					{Tax: "10289.97", Bracket: taxBrackets.Data[1]},
-					{Tax: "0.26", Bracket: taxBrackets.Data[2]},
+					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
+					{Tax: 10289.97, Bracket: taxBrackets.Data[1]},
+					{Tax: 0.26, Bracket: taxBrackets.Data[2]},
 				},
 			},
 		},
 		"calculate over five bands": {
 			"221709",
 			taxcalculator.TaxCalculation{
-				TotalTaxes:    "51344.50",
-				EffectiveRate: "0.23",
+				Salary:        221709,
+				TotalTaxes:    51344.50,
+				EffectiveRate: 0.23,
 				BracketTaxes: []taxcalculator.BracketTax{
-					{Tax: "7529.55", Bracket: taxBrackets.Data[0]},
-					{Tax: "10289.97", Bracket: taxBrackets.Data[1]},
-					{Tax: "14360.58", Bracket: taxBrackets.Data[2]},
-					{Tax: "19164.07", Bracket: taxBrackets.Data[3]},
-					{Tax: "0.33", Bracket: taxBrackets.Data[4]},
+					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
+					{Tax: 10289.97, Bracket: taxBrackets.Data[1]},
+					{Tax: 14360.58, Bracket: taxBrackets.Data[2]},
+					{Tax: 19164.07, Bracket: taxBrackets.Data[3]},
+					{Tax: 0.33, Bracket: taxBrackets.Data[4]},
 				},
 			},
 		},

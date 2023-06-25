@@ -18,6 +18,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over one band": {
 			50196,
 			TaxCalculation{
+				50196,
 				7529.40,
 				0.15,
 				[]BracketTax{
@@ -28,6 +29,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over one band with boundary salary": {
 			50197,
 			TaxCalculation{
+				50197,
 				7529.55,
 				0.15,
 				[]BracketTax{
@@ -38,6 +40,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over two bands": {
 			55000,
 			TaxCalculation{
+				55000,
 				8514.17,
 				0.15,
 				[]BracketTax{
@@ -49,6 +52,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over two bands with boundary salary": {
 			100392,
 			TaxCalculation{
+				100392,
 				17819.52,
 				0.18,
 				[]BracketTax{
@@ -60,6 +64,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over three bands": {
 			100393,
 			TaxCalculation{
+				100393,
 				17819.78,
 				0.18,
 				[]BracketTax{
@@ -72,6 +77,7 @@ func TestCalculate(t *testing.T) {
 		"calculate over five bands": {
 			221709,
 			TaxCalculation{
+				221709,
 				51344.50,
 				0.23,
 				[]BracketTax{
