@@ -1,0 +1,69 @@
+definitions:
+  main.taxServerError:
+    properties:
+      error:
+        type: string
+    type: object
+  main.taxServerResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  taxcalculator.BracketTax:
+    properties:
+      band:
+        $ref: '#/definitions/taxclient.Bracket'
+      tax:
+        type: string
+    type: object
+  taxcalculator.TaxCalculation:
+    properties:
+      effective_rate:
+        type: string
+      taxes_by_band:
+        items:
+          $ref: '#/definitions/taxcalculator.BracketTax'
+        type: array
+      total_taxes:
+        type: string
+    type: object
+  taxclient.Bracket:
+    properties:
+      max:
+        type: number
+      min:
+        type: number
+      rate:
+        type: number
+    type: object
+info:
+  contact: {}
+paths:
+  /tax/{year}}:
+    get:
+      description: calculate taxes for given a salary and tax year
+      parameters:
+      - description: tax year
+        in: path
+        name: year
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/taxcalculator.TaxCalculation'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/main.taxServerResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.taxServerError'
+      summary: calculate taxes
+      tags:
+      - taxes
+swagger: "2.0"

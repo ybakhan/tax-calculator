@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-kit/kit/log"
 	"github.com/hashicorp/go-retryablehttp"
+	_ "github.com/ybakhan/tax-calculator/taxcalculator"
 	"github.com/ybakhan/tax-calculator/taxclient"
 )
 

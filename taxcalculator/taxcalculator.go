@@ -29,7 +29,7 @@ func Calculate(brackets []taxclient.Bracket, salary float32) *TaxCalculation {
 
 	answer := &TaxCalculation{
 		format(total),
-		format(total / salary),
+		format(round(total / salary)),
 		taxByBand,
 	}
 	return answer

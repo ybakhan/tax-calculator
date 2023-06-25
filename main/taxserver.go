@@ -10,6 +10,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
+	_ "github.com/ybakhan/tax-calculator/docs"
 	"github.com/ybakhan/tax-calculator/taxcalculator"
 	"github.com/ybakhan/tax-calculator/taxclient"
 )
@@ -18,6 +20,7 @@ import (
 func (s *taxServer) Start() {
 	router := mux.NewRouter()
 	router.HandleFunc("/tax/{year}", s.makeHTTPHandlerFunc(s.handleTaxes))
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	s.Logger.Log("msg", fmt.Sprintf("tax calculator listening on port %s", s.ListenAddress))
 	http.ListenAndServe(s.ListenAddress, router)
@@ -36,14 +39,23 @@ func (s *taxServer) handleTaxes(w http.ResponseWriter, r *http.Request) (int, er
 	return http.StatusBadRequest, fmt.Errorf("method not supported %s", r.Method)
 }
 
-// handleGetTaxes handles get taxes api call
+// handleGetTaxes handles get taxes api call go doc
+//
+//	@Summary		calculate taxes
+//	@Description	calculate taxes for given a salary and tax year
+//	@Tags			taxes
+//	@Produce		json
+//	@Param			year	path		string	true	"tax year"
+//	@Success		200		{object}	taxcalculator.TaxCalculation
+//	@Failure		404		{object}	taxServerResponse
+//	@Failure		500		{object}	taxServerError
+//	@Router			/tax/{year} [get]
 func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i int, err error) {
 	defer func() {
 		if err != nil {
 			s.Logger.Log("requestID", getRequestID(r.Context()), "error", err)
 		}
 	}()
-
 	vars := mux.Vars(r)
 	year := vars["year"]
 	if _, err := strconv.Atoi(year); err != nil {
