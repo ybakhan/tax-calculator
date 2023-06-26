@@ -2,7 +2,6 @@
 package taxcalculator
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/ybakhan/tax-calculator/taxbracket"
@@ -52,8 +51,4 @@ func calculateBracketTax(bracket taxbracket.Bracket, salary float32) float32 {
 
 func round(f float32) float32 {
 	return float32(math.Round(float64(f*100)) / 100)
-}
-
-func format(f float32) string {
-	return fmt.Sprintf("%.2f", f)
 }
