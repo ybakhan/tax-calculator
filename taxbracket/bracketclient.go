@@ -74,6 +74,11 @@ func (c *bracketClient) getBrackets(ctx context.Context, year string) ([]Bracket
 		return nil, Failed, err
 	}
 
+	if len(taxbrackets.Data) == 0 {
+		c.logger.Log("requestID", getRequestID(ctx), "msg", "tax brackets not found", "year", year)
+		return nil, NotFound, nil
+	}
+
 	c.logger.Log("requestID", getRequestID(ctx), "msg", "tax brackets found", "year", year, "taxBrackets", taxbrackets)
 	return taxbrackets.Data, Found, nil
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
+	"github.com/ybakhan/tax-calculator/cache"
 	_ "github.com/ybakhan/tax-calculator/docs"
 	"github.com/ybakhan/tax-calculator/taxbracket"
 	"github.com/ybakhan/tax-calculator/taxcalculator"
@@ -76,7 +77,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 
 	ctx := r.Context()
 	var taxes *taxcalculator.TaxCalculation
-	if brackets := s.BracketCache.Get(ctx, year); brackets != nil {
+	if brackets, resp := s.BracketCache.Get(ctx, year); resp == cache.Found {
 		taxes = taxcalculator.Calculate(brackets, float32(salaryF))
 	} else {
 		brackets, response, err := s.BracketClient.GetBrackets(ctx, year)

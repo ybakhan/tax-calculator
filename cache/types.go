@@ -15,9 +15,17 @@ const (
 	Failed
 )
 
+type SaveBracketsResponse int
+
+const (
+	Saved = -(iota)
+	NotSaved
+	SaveError
+)
+
 type BracketCache interface {
-	Get(context.Context, string) []taxbracket.Bracket
-	Save(context.Context, string, []taxbracket.Bracket) error
+	Get(context.Context, string) ([]taxbracket.Bracket, GetBracketsResponse)
+	Save(context.Context, string, []taxbracket.Bracket) (SaveBracketsResponse, error)
 }
 
 type bracketCache struct {

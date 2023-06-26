@@ -59,6 +59,13 @@ func TestGetBrackets(t *testing.T) {
 			ExpectedResponse: Failed,
 			ReturnsError:     true,
 		},
+		"brackets empty": {
+			HTTPResponse: &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader("{\"tax_brackets\":[]}")),
+			},
+			ExpectedResponse: NotFound,
+		},
 		"get brackets": {
 			HTTPResponse: &http.Response{
 				StatusCode: http.StatusOK,
