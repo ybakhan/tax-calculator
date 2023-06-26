@@ -80,7 +80,7 @@ func initializeBracketCache(redisClient *redis.Client, logger log.Logger) cache.
 
 		if err != nil {
 			logger.Log("requestID", getRequestID(ctx), "error", err, "msg", "error getting tax brackets from cache")
-			return "", cache.Failed
+			return "", cache.GetError
 		}
 
 		return result, cache.Found

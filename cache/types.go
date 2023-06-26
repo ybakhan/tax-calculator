@@ -13,7 +13,7 @@ type GetBracketsResponse int
 const (
 	Found GetBracketsResponse = -(iota)
 	NotFound
-	Failed
+	GetError
 )
 
 // SaveBracketsResponse represents response type of save tax brackets to cache function

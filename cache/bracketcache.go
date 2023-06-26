@@ -23,7 +23,7 @@ func (c *bracketCache) Get(ctx context.Context, year string) ([]taxbracket.Brack
 	err := json.Unmarshal([]byte(bracketsStr), &taxbrackets)
 	if err != nil {
 		c.Logger.Log("requestID", getRequestID(ctx), "error", err, "message", "error getting tax brackets from cache", "year", year)
-		return nil, Failed
+		return nil, GetError
 	}
 
 	c.Logger.Log("requestID", getRequestID(ctx), "message", "tax brackets retrieved from cache", "taxbrackets", taxbrackets)

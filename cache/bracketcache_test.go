@@ -34,7 +34,7 @@ func TestGet(t *testing.T) {
 		ExpectedBrackets []taxbracket.Bracket
 	}{
 		"Not found": {brackets, NotFound, nil},
-		"Error":     {brackets, Failed, nil},
+		"Error":     {brackets, GetError, nil},
 		"Found": {
 			brackets,
 			Found,
