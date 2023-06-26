@@ -74,13 +74,13 @@ func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.L
 func initializeBracketCache(redisClient *redis.Client, logger log.Logger) cache.BracketCache {
 	getHandler := func(ctx context.Context, year string) (string, cache.GetBracketsResponse) {
 		result, err := redisClient.Get(ctx, year).Result()
-		if err != nil {
-			logger.Log("error", err, "msg", "error getting tax brackets from cache")
-			return "", cache.Failed
-		}
-
 		if err == redis.Nil {
 			return "", cache.NotFound
+		}
+
+		if err != nil {
+			logger.Log("requestID", getRequestID(ctx), "error", err, "msg", "error getting tax brackets from cache")
+			return "", cache.Failed
 		}
 
 		return result, cache.Found

@@ -21,23 +21,23 @@ func (c *bracketCache) Get(ctx context.Context, year string) ([]taxbracket.Brack
 	var taxbrackets []taxbracket.Bracket
 	err := json.Unmarshal([]byte(bracketsStr), &taxbrackets)
 	if err != nil {
-		c.Logger.Log("error", err, "message", "error getting tax brackets from cache", "year", year)
+		c.Logger.Log("requestID", getRequestID(ctx), "error", err, "message", "error getting tax brackets from cache", "year", year)
 		return nil, Failed
 	}
 
-	c.Logger.Log("message", "tax brackets retrieved from cache", "taxbrackets", taxbrackets)
+	c.Logger.Log("requestID", getRequestID(ctx), "message", "tax brackets retrieved from cache", "taxbrackets", taxbrackets)
 	return taxbrackets, Found
 }
 
 func (c *bracketCache) Save(ctx context.Context, year string, brackets []taxbracket.Bracket) (resp SaveBracketsResponse, err error) {
 	defer func() {
 		if err != nil {
-			c.Logger.Log("error", err, "message", "error saving tax brackets to cache", "year", year, "taxbrackets", brackets)
+			c.Logger.Log("requestID", getRequestID(ctx), "error", err, "message", "error saving tax brackets to cache", "year", year, "taxbrackets", brackets)
 		}
 	}()
 
 	if len(brackets) == 0 {
-		c.Logger.Log("message", "empty tax brackets not saved in cache", "year", year, "taxbrackets", brackets)
+		c.Logger.Log("requestID", getRequestID(ctx), "message", "empty tax brackets not saved in cache", "year", year, "taxbrackets", brackets)
 		return NotSaved, nil
 	}
 
@@ -51,6 +51,14 @@ func (c *bracketCache) Save(ctx context.Context, year string, brackets []taxbrac
 		return SaveError, err
 	}
 
-	c.Logger.Log("message", "tax brackets saved in cache", "year", year, "taxbrackets", brackets)
+	c.Logger.Log("requestID", getRequestID(ctx), "message", "tax brackets saved in cache", "year", year, "taxbrackets", brackets)
 	return Saved, nil
+}
+
+func getRequestID(ctx context.Context) string {
+	requestID, ok := ctx.Value("requestID").(string)
+	if !ok {
+		return ""
+	}
+	return requestID
 }
