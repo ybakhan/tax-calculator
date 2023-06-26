@@ -7,6 +7,7 @@ import (
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
+// GetBracketsResponse represents response type of get tax brackets from cache function
 type GetBracketsResponse int
 
 const (
@@ -15,6 +16,7 @@ const (
 	Failed
 )
 
+// SaveBracketsResponse represents response type of save tax brackets to cache function
 type SaveBracketsResponse int
 
 const (
@@ -23,6 +25,7 @@ const (
 	SaveError
 )
 
+// BracketCache allows storage and retrieval of tax brackets from a cache
 type BracketCache interface {
 	Get(context.Context, string) ([]taxbracket.Bracket, GetBracketsResponse)
 	Save(context.Context, string, []taxbracket.Bracket) (SaveBracketsResponse, error)

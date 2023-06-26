@@ -17,6 +17,7 @@ const (
 	Failed
 )
 
+// BracketClient allows getting tax brackets for a given year
 type BracketClient interface {
 	GetBrackets(context.Context, string) ([]Bracket, GetBracketsResponse, error)
 }

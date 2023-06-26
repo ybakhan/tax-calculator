@@ -12,6 +12,7 @@ func InitializeBracketCache(getHandler GetHandler, saveHandler SaveHandler, logg
 	return &bracketCache{getHandler, saveHandler, logger}
 }
 
+// Get retrieves a tax bracket from cache for a given year
 func (c *bracketCache) Get(ctx context.Context, year string) ([]taxbracket.Bracket, GetBracketsResponse) {
 	bracketsStr, resp := c.GetHandler(ctx, year)
 	if resp != Found {
@@ -29,6 +30,7 @@ func (c *bracketCache) Get(ctx context.Context, year string) ([]taxbracket.Brack
 	return taxbrackets, Found
 }
 
+// Save saves tax brackets in cache for a given year
 func (c *bracketCache) Save(ctx context.Context, year string, brackets []taxbracket.Bracket) (resp SaveBracketsResponse, err error) {
 	defer func() {
 		if err != nil {

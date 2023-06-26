@@ -16,10 +16,12 @@ type taxServer struct {
 	Logger        log.Logger
 }
 
+// taxServerError represents error response of tax server api
 type taxServerError struct {
 	Error string `json:"error"`
 }
 
+// taxServerResponse represents plain text response of tax server api
 type taxServerResponse struct {
 	Message string `json:"message"`
 }
