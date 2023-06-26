@@ -12,17 +12,17 @@ func TestCalculate(t *testing.T) {
 	taxBrackets := testcommon.ReadTaxBrackets(t, "../testcommon/taxbrackets.json")
 
 	tests := map[string]struct {
-		Salary   float32
+		Salary   float64
 		Expected TaxCalculation
 	}{
 		"calculate over one band": {
-			50196,
+			50000,
 			TaxCalculation{
-				50196,
-				7529.40,
+				50000,
+				7500,
 				0.15,
 				[]BracketTax{
-					{7529.40, taxBrackets.Data[0]},
+					{7500, taxBrackets.Data[0]},
 				},
 			},
 		},
@@ -38,14 +38,14 @@ func TestCalculate(t *testing.T) {
 			},
 		},
 		"calculate over two bands": {
-			55000,
+			100000,
 			TaxCalculation{
-				55000,
-				8514.17,
-				0.15,
+				100000,
+				17739.17,
+				0.18,
 				[]BracketTax{
 					{7529.55, taxBrackets.Data[0]},
-					{984.62, taxBrackets.Data[1]},
+					{10209.62, taxBrackets.Data[1]},
 				},
 			},
 		},
@@ -75,19 +75,22 @@ func TestCalculate(t *testing.T) {
 			},
 		},
 		"calculate over five bands": {
-			221709,
+			1234567,
 			TaxCalculation{
-				221709,
-				51344.50,
-				0.23,
+				1234567,
+				385587.65,
+				0.31,
 				[]BracketTax{
 					{7529.55, taxBrackets.Data[0]},
 					{10289.97, taxBrackets.Data[1]},
 					{14360.58, taxBrackets.Data[2]},
 					{19164.07, taxBrackets.Data[3]},
-					{0.33, taxBrackets.Data[4]},
+					{334243.47, taxBrackets.Data[4]},
 				},
 			},
+		},
+		"zero salary": {
+			0, TaxCalculation{},
 		},
 	}
 
@@ -102,8 +105,8 @@ func TestCalculate(t *testing.T) {
 func TestCalculateByBracket(t *testing.T) {
 	tests := map[string]struct {
 		Bracket     taxbracket.Bracket
-		Salary      float32
-		ExpectedTax float32
+		Salary      float64
+		ExpectedTax float64
 	}{
 		"first bracket": {
 			Salary: 55000,
@@ -121,7 +124,7 @@ func TestCalculateByBracket(t *testing.T) {
 				Max:  100392,
 				Rate: 0.205,
 			},
-			ExpectedTax: 984.62,
+			ExpectedTax: 984.61,
 		},
 		"out of bracket": {
 			Salary: 50197,
@@ -146,7 +149,7 @@ func TestCalculateByBracket(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			tax := calculateBracketTax(test.Bracket, test.Salary)
-			assert.Equal(t, test.ExpectedTax, tax)
+			assert.Equal(t, test.ExpectedTax, round(tax))
 		})
 	}
 }

@@ -25,14 +25,14 @@ func TestGetTaxes(t *testing.T) {
 		Expected taxcalculator.TaxCalculation
 	}{
 		"calculate over one band": {
-			"50196",
+			"50000",
 			taxcalculator.TaxCalculation{
-				Salary:        50196,
-				TotalTaxes:    7529.40,
+				Salary:        50000,
+				TotalTaxes:    7500,
 				EffectiveRate: 0.15,
 				BracketTaxes: []taxcalculator.BracketTax{
 					{
-						Tax:     7529.40,
+						Tax:     7500,
 						Bracket: taxBrackets.Data[0],
 					},
 				},
@@ -50,14 +50,14 @@ func TestGetTaxes(t *testing.T) {
 			},
 		},
 		"calculate over two bands": {
-			"55000",
+			"100000",
 			taxcalculator.TaxCalculation{
-				Salary:        55000,
-				TotalTaxes:    8514.17,
-				EffectiveRate: 0.15,
+				Salary:        100000,
+				TotalTaxes:    17739.17,
+				EffectiveRate: 0.18,
 				BracketTaxes: []taxcalculator.BracketTax{
 					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
-					{Tax: 984.62, Bracket: taxBrackets.Data[1]},
+					{Tax: 10209.62, Bracket: taxBrackets.Data[1]},
 				},
 			},
 		},
@@ -87,19 +87,22 @@ func TestGetTaxes(t *testing.T) {
 			},
 		},
 		"calculate over five bands": {
-			"221709",
+			"1234567",
 			taxcalculator.TaxCalculation{
-				Salary:        221709,
-				TotalTaxes:    51344.50,
-				EffectiveRate: 0.23,
+				Salary:        1234567,
+				TotalTaxes:    385587.65,
+				EffectiveRate: 0.31,
 				BracketTaxes: []taxcalculator.BracketTax{
 					{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
 					{Tax: 10289.97, Bracket: taxBrackets.Data[1]},
 					{Tax: 14360.58, Bracket: taxBrackets.Data[2]},
 					{Tax: 19164.07, Bracket: taxBrackets.Data[3]},
-					{Tax: 0.33, Bracket: taxBrackets.Data[4]},
+					{Tax: 334243.47, Bracket: taxBrackets.Data[4]},
 				},
 			},
+		},
+		"zero salary": {
+			"0", taxcalculator.TaxCalculation{Salary: 0, TotalTaxes: 0},
 		},
 	}
 

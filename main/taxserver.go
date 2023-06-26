@@ -70,7 +70,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 		return http.StatusBadRequest, errors.New("salary missing in request")
 	}
 
-	salaryF, err := strconv.ParseFloat(salaryStr, 32)
+	salaryF, err := strconv.ParseFloat(salaryStr, 64)
 	if err != nil {
 		return http.StatusBadRequest, fmt.Errorf("invalid salary %s", salaryStr)
 	}
@@ -78,7 +78,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 	ctx := r.Context()
 	var taxes *taxcalculator.TaxCalculation
 	if brackets, resp := s.BracketCache.Get(ctx, year); resp == cache.Found {
-		taxes = taxcalculator.Calculate(brackets, float32(salaryF))
+		taxes = taxcalculator.Calculate(brackets, salaryF)
 	} else {
 		brackets, response, err := s.BracketClient.GetBrackets(ctx, year)
 		if err != nil {
@@ -98,7 +98,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (i in
 		}
 
 		s.BracketCache.Save(ctx, year, brackets)
-		taxes = taxcalculator.Calculate(brackets, float32(salaryF))
+		taxes = taxcalculator.Calculate(brackets, salaryF)
 	}
 
 	s.Logger.Log("requestID", getRequestID(ctx), "msg", "calculated taxes", "year", year, "salary", salaryF, "taxes", taxes)

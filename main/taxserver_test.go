@@ -23,14 +23,17 @@ import (
 
 func TestHandleGetTaxes(t *testing.T) {
 	taxBrackets := testcommon.ReadTaxBrackets(t, "../testcommon/taxbrackets.json")
+	salaryStr := "1234567"
 	expectedTaxes := &taxcalculator.TaxCalculation{
-		Salary:        100393,
-		TotalTaxes:    17819.78,
-		EffectiveRate: 0.18,
+		Salary:        1234567,
+		TotalTaxes:    385587.65,
+		EffectiveRate: 0.31,
 		BracketTaxes: []taxcalculator.BracketTax{
-			{Tax: 7529.55, Bracket: taxBrackets.Data[0]},
-			{Tax: 10289.97, Bracket: taxBrackets.Data[1]},
-			{Tax: 0.26, Bracket: taxBrackets.Data[2]},
+			{7529.55, taxBrackets.Data[0]},
+			{10289.97, taxBrackets.Data[1]},
+			{14360.58, taxBrackets.Data[2]},
+			{19164.07, taxBrackets.Data[3]},
+			{334243.47, taxBrackets.Data[4]},
 		},
 	}
 
@@ -65,7 +68,7 @@ func TestHandleGetTaxes(t *testing.T) {
 		},
 		"brackets found in cache": {
 			Year:                         "2022",
-			Salary:                       "100393",
+			Salary:                       salaryStr,
 			CachedBrackets:               taxBrackets.Data,
 			GetBracketsFromCacheResponse: cache.Found,
 			ExpectedStatusCode:           http.StatusOK,
@@ -73,7 +76,7 @@ func TestHandleGetTaxes(t *testing.T) {
 		},
 		"brackets not found in cache, get brackets success": {
 			Year:                         "2022",
-			Salary:                       "100393",
+			Salary:                       salaryStr,
 			GetBracketsFromCacheResponse: cache.NotFound,
 			Brackets:                     taxBrackets.Data,
 			GetBracketsResponse:          taxbracket.Found,
@@ -82,7 +85,7 @@ func TestHandleGetTaxes(t *testing.T) {
 		},
 		"brackets not found in cache, get brackets error": {
 			Year:                         "2022",
-			Salary:                       "100393",
+			Salary:                       salaryStr,
 			GetBracketsFromCacheResponse: cache.NotFound,
 			GetBracketsError:             errors.New("some error"),
 			ExpectedStatusCode:           http.StatusInternalServerError,
@@ -90,7 +93,7 @@ func TestHandleGetTaxes(t *testing.T) {
 		},
 		"brackets not found in cache, get brackets failed": {
 			Year:                         "2022",
-			Salary:                       "100393",
+			Salary:                       salaryStr,
 			GetBracketsFromCacheResponse: cache.NotFound,
 			GetBracketsResponse:          taxbracket.Failed,
 			ExpectedStatusCode:           http.StatusInternalServerError,
@@ -98,7 +101,7 @@ func TestHandleGetTaxes(t *testing.T) {
 		},
 		"brackets not found in cache, tax year not found": {
 			Year:                         "2023",
-			Salary:                       "100393",
+			Salary:                       salaryStr,
 			GetBracketsFromCacheResponse: cache.NotFound,
 			GetBracketsResponse:          taxbracket.NotFound,
 			ExpectedStatusCode:           http.StatusNotFound,
