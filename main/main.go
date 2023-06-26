@@ -20,9 +20,9 @@ import (
 //	@version		1.0
 //	@description	REST API for calculating taxes
 
-// @contact.name	Yasser Khan
-// @contact.url	http://github.com/ybakhan
-// @contact.email	ybakhan@gmail.com
+//	@contact.name	Yasser Khan
+//	@contact.url	http://github.com/ybakhan
+//	@contact.email	ybakhan@gmail.com
 func main() {
 	terminate := make(chan os.Signal, 1)
 	signal.Notify(terminate, os.Interrupt, syscall.SIGTERM)
