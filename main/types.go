@@ -10,10 +10,11 @@ import (
 
 // taxServer represents api server that handles requests to calculate taxes
 type taxServer struct {
-	ListenAddress string
-	BracketClient taxbracket.BracketClient
-	BracketCache  cache.BracketCache
-	Logger        log.Logger
+	ListenAddress  string
+	BracketClient  taxbracket.BracketClient
+	BracketCache   cache.BracketCache
+	ApiTokenConfig *ApiTokenConfig
+	Logger         log.Logger
 }
 
 // taxServerError represents error response of tax server api
@@ -26,4 +27,18 @@ type taxServerResponse struct {
 	Message string `json:"message"`
 }
 
-type requestHandler func(http.ResponseWriter, *http.Request) (int, error)
+type requestHandler func(http.ResponseWriter, *http.Request) (*handlerResponse, error)
+
+type user struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type loginResponse struct {
+	Token string `json:"token"`
+}
+
+type handlerResponse struct {
+	Status int
+	Body   any
+}

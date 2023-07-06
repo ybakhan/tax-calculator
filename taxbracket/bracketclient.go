@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-kit/kit/log"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/ybakhan/tax-calculator/common"
 )
 
 const bracketsResourcePath = "/tax-calculator/tax-year/"
@@ -32,7 +33,7 @@ func InitializeBracketClient(baseURL string, client retryableHTTPClient, logger 
 func (c *bracketClient) GetBrackets(ctx context.Context, year string) ([]Bracket, GetBracketsResponse, error) {
 	brackets, response, err := c.getBrackets(ctx, year)
 	if err != nil {
-		c.logger.Log("requestID", getRequestID(ctx), "error", err)
+		c.logger.Log("requestID", common.GetRequestID(ctx), "error", err)
 	}
 	return brackets, response, err
 }
@@ -55,7 +56,7 @@ func (c *bracketClient) getBrackets(ctx context.Context, year string) ([]Bracket
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
-		c.logger.Log("requestID", getRequestID(ctx), "msg", "tax brackets not found", "year", year)
+		c.logger.Log("requestID", common.GetRequestID(ctx), "msg", "tax brackets not found", "year", year)
 		return nil, NotFound, nil
 	}
 
@@ -75,18 +76,10 @@ func (c *bracketClient) getBrackets(ctx context.Context, year string) ([]Bracket
 	}
 
 	if len(taxbrackets.Data) == 0 {
-		c.logger.Log("requestID", getRequestID(ctx), "msg", "tax brackets not found", "year", year)
+		c.logger.Log("requestID", common.GetRequestID(ctx), "msg", "tax brackets not found", "year", year)
 		return nil, NotFound, nil
 	}
 
-	c.logger.Log("requestID", getRequestID(ctx), "msg", "tax brackets found", "year", year, "taxBrackets", taxbrackets)
+	c.logger.Log("requestID", common.GetRequestID(ctx), "msg", "tax brackets found", "year", year, "taxBrackets", taxbrackets)
 	return taxbrackets.Data, Found, nil
-}
-
-func getRequestID(ctx context.Context) string {
-	requestID, ok := ctx.Value("requestID").(string)
-	if !ok {
-		return ""
-	}
-	return requestID
 }

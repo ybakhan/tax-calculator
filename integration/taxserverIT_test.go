@@ -11,7 +11,9 @@ import (
 	"net/url"
 	"os"
 	"testing"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"
 	"github.com/ybakhan/tax-calculator/taxcalculator"
 	"github.com/ybakhan/tax-calculator/testcommon"
@@ -159,6 +161,16 @@ func getTaxes(t *testing.T, year, salary string) []byte {
 		t.Fatal(err)
 	}
 
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": "any",
+		"exp":      time.Now().Add(time.Minute).Unix(),
+	})
+	tokenString, err := token.SignedString([]byte("your-secret-key"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.Header.Set("Authorization", "Bearer "+tokenString)
 	resp, err := client.Do(req)
 	if err != nil {
 		t.Fatal(err)

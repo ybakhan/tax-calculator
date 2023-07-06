@@ -20,9 +20,56 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/login": {
+            "post": {
+                "description": "returns api key for calling taxes api",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "taxes"
+                ],
+                "summary": "login to taxes api",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.loginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/main.taxServerError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/main.taxServerResponse"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "$ref": "#/definitions/main.taxServerError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/main.taxServerError"
+                        }
+                    }
+                }
+            }
+        },
         "/tax/{year}": {
             "get": {
                 "description": "calculate taxes for given a salary and tax year",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -70,6 +117,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "main.loginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "main.taxServerError": {
             "type": "object",
             "properties": {
@@ -86,11 +141,28 @@ const docTemplate = `{
                 }
             }
         },
+        "taxbracket.Bracket": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "number",
+                    "example": 100392
+                },
+                "min": {
+                    "type": "number",
+                    "example": 50197
+                },
+                "rate": {
+                    "type": "number",
+                    "example": 0.205
+                }
+            }
+        },
         "taxcalculator.BracketTax": {
             "type": "object",
             "properties": {
                 "band": {
-                    "$ref": "#/definitions/taxclient.Bracket"
+                    "$ref": "#/definitions/taxbracket.Bracket"
                 },
                 "tax": {
                     "type": "number",
@@ -118,23 +190,6 @@ const docTemplate = `{
                 "total_taxes": {
                     "type": "number",
                     "example": 8514.17
-                }
-            }
-        },
-        "taxclient.Bracket": {
-            "type": "object",
-            "properties": {
-                "max": {
-                    "type": "number",
-                    "example": 100392
-                },
-                "min": {
-                    "type": "number",
-                    "example": 50197
-                },
-                "rate": {
-                    "type": "number",
-                    "example": 0.205
                 }
             }
         }

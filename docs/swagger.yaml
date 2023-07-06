@@ -1,4 +1,9 @@
 definitions:
+  main.loginResponse:
+    properties:
+      token:
+        type: string
+    type: object
   main.taxServerError:
     properties:
       error:
@@ -9,10 +14,22 @@ definitions:
       message:
         type: string
     type: object
+  taxbracket.Bracket:
+    properties:
+      max:
+        example: 100392
+        type: number
+      min:
+        example: 50197
+        type: number
+      rate:
+        example: 0.205
+        type: number
+    type: object
   taxcalculator.BracketTax:
     properties:
       band:
-        $ref: '#/definitions/taxclient.Bracket'
+        $ref: '#/definitions/taxbracket.Bracket'
       tax:
         example: 984.62
         type: number
@@ -33,18 +50,6 @@ definitions:
         example: 8514.17
         type: number
     type: object
-  taxclient.Bracket:
-    properties:
-      max:
-        example: 100392
-        type: number
-      min:
-        example: 50197
-        type: number
-      rate:
-        example: 0.205
-        type: number
-    type: object
 info:
   contact:
     email: ybakhan@gmail.com
@@ -54,8 +59,39 @@ info:
   title: Tax Calculator API
   version: "1.0"
 paths:
+  /login:
+    post:
+      description: returns api key for calling taxes api
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.loginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.taxServerError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/main.taxServerResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            $ref: '#/definitions/main.taxServerError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.taxServerError'
+      summary: login to taxes api
+      tags:
+      - taxes
   /tax/{year}:
     get:
+      consumes:
+      - application/json
       description: calculate taxes for given a salary and tax year
       parameters:
       - description: tax year

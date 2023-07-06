@@ -8,7 +8,8 @@ import (
 
 // Config represents configurable properties of tax-calculator
 type Config struct {
-	Port int `yaml:"port"`
+	Port     int            `yaml:"port"`
+	ApiToken ApiTokenConfig `yaml:"apiToken"`
 
 	Redis struct {
 		Address  string `yaml:"address"`
@@ -31,6 +32,11 @@ type Config struct {
 			} `yaml:"wait"`
 		} `yaml:"retry"`
 	} `yaml:"httpClient"`
+}
+
+type ApiTokenConfig struct {
+	ExpirationMinutes int    `yaml:"expirationMinutes"`
+	Secret            string `yaml:"secret"`
 }
 
 func readConfig() *Config {

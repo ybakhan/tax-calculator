@@ -133,7 +133,7 @@ func TestHandleGetTaxes(t *testing.T) {
 				}
 			}
 
-			s := &taxServer{"", &mockBracketClient, &mockBracketCache, logger}
+			s := &taxServer{"", &mockBracketClient, &mockBracketCache, nil, logger}
 
 			router := mux.NewRouter()
 			router.HandleFunc("/tax/{year}", s.makeHTTPHandlerFunc(s.handleGetTaxes))

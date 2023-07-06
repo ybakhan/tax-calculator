@@ -1,4 +1,7 @@
 port: 8080
+apiToken:
+  expirationMinutes: 60
+  secret: your-secret-key
 interviewServer:
   baseUrl: http://interview-test-server:5000
 redis:

@@ -13,6 +13,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/ybakhan/tax-calculator/cache"
+	"github.com/ybakhan/tax-calculator/common"
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
@@ -67,7 +68,7 @@ func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.L
 	bracketClient := taxbracket.InitializeBracketClient(config.InterviewServer.BaseURL, httpClient, logger)
 	bracketCache := initializeBracketCache(redisClient, logger)
 
-	server := &taxServer{listenAddress, bracketClient, bracketCache, logger}
+	server := &taxServer{listenAddress, bracketClient, bracketCache, &config.ApiToken, logger}
 	server.Start()
 }
 
@@ -79,7 +80,7 @@ func initializeBracketCache(redisClient *redis.Client, logger log.Logger) cache.
 		}
 
 		if err != nil {
-			logger.Log("requestID", getRequestID(ctx), "error", err, "msg", "error getting tax brackets from cache")
+			logger.Log("requestID", common.GetRequestID(ctx), "error", err, "msg", "error getting tax brackets from cache")
 			return "", cache.GetError
 		}
 
@@ -92,7 +93,6 @@ func initializeBracketCache(redisClient *redis.Client, logger log.Logger) cache.
 	}
 
 	return cache.InitializeBracketCache(getHandler, saveHandler, logger)
-
 }
 
 func initializeLogger() log.Logger {
