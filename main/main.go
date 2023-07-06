@@ -65,7 +65,7 @@ func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.L
 	httpClient.RetryMax = config.HTTPClient.Retry.Max
 
 	listenAddress := fmt.Sprintf(":%d", config.Port)
-	bracketClient := taxbracket.InitializeBracketClient(config.InterviewServer.BaseURL, httpClient, logger)
+	bracketClient := taxbracket.InitializeBracketClient(config.InterviewServer.BaseURL, httpClient.StandardClient(), logger)
 	bracketCache := initializeBracketCache(redisClient, logger)
 
 	server := &taxServer{listenAddress, bracketClient, bracketCache, &config.ApiToken, logger}

@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/log"
-	"github.com/hashicorp/go-retryablehttp"
 )
 
 // GetBracketsResponse represents response type of get tax brackets function
@@ -22,13 +21,13 @@ type BracketClient interface {
 	GetBrackets(context.Context, string) ([]Bracket, GetBracketsResponse, error)
 }
 
-type retryableHTTPClient interface {
-	Do(req *retryablehttp.Request) (*http.Response, error)
+type httpClient interface {
+	Do(req *http.Request) (*http.Response, error)
 }
 
 type bracketClient struct {
 	bracketsURL string
-	client      retryableHTTPClient
+	client      httpClient
 	logger      log.Logger
 }
 

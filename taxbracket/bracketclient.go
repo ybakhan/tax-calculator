@@ -9,13 +9,12 @@ import (
 	"net/url"
 
 	"github.com/go-kit/kit/log"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/ybakhan/tax-calculator/common"
 )
 
 const bracketsResourcePath = "/tax-calculator/tax-year/"
 
-func InitializeBracketClient(baseURL string, client retryableHTTPClient, logger log.Logger) BracketClient {
+func InitializeBracketClient(baseURL string, client httpClient, logger log.Logger) BracketClient {
 	bracketsURL, err := url.JoinPath(baseURL, bracketsResourcePath)
 	if err != nil {
 		err = fmt.Errorf("error intializing tax bracket client: %w", err)
@@ -44,7 +43,7 @@ func (c *bracketClient) getBrackets(ctx context.Context, year string) ([]Bracket
 		return nil, Failed, err
 	}
 
-	req, err := retryablehttp.NewRequestWithContext(ctx, http.MethodGet, taxBracketsURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, taxBracketsURL, nil)
 	if err != nil {
 		return nil, Failed, err
 	}

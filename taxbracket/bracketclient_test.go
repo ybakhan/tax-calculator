@@ -10,15 +10,13 @@ import (
 	"testing"
 
 	"github.com/go-kit/kit/log"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
 func TestInitializeTaxClient(t *testing.T) {
 	logger := log.NewNopLogger()
-	httpClient := retryablehttp.NewClient()
-	bracketClient := InitializeBracketClient("http://interview-test-server:5000", httpClient, logger)
+	bracketClient := InitializeBracketClient("http://interview-test-server:5000", &mockHTTPClient{}, logger)
 	assert.NotNil(t, bracketClient)
 }
 
@@ -78,9 +76,9 @@ func TestGetBrackets(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			mockHTTPClient := &mockRetryableHTTPClient{}
+			mockHTTPClient := &mockHTTPClient{}
 			mockHTTPClient.
-				On("Do", mock.AnythingOfType("*retryablehttp.Request")).
+				On("Do", mock.AnythingOfType("*http.Request")).
 				Return(test.HTTPResponse, test.HTTPError)
 
 			client := InitializeBracketClient("http://interview-test-server:5000", mockHTTPClient, logger)
@@ -98,11 +96,11 @@ func TestGetBrackets(t *testing.T) {
 	}
 }
 
-type mockRetryableHTTPClient struct {
+type mockHTTPClient struct {
 	mock.Mock
 }
 
-func (m *mockRetryableHTTPClient) Do(req *retryablehttp.Request) (*http.Response, error) {
+func (m *mockHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	args := m.Called(req)
 	return args.Get(0).(*http.Response), args.Error(1)
 }

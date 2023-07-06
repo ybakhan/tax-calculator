@@ -23,7 +23,7 @@ func TestGetBrackets(t *testing.T) {
 	httpClient.RetryMax = 5
 
 	logger := log.NewNopLogger()
-	bracketClient := taxbracket.InitializeBracketClient(os.Getenv("INTERVIEW_SERVER"), httpClient, logger)
+	bracketClient := taxbracket.InitializeBracketClient(os.Getenv("INTERVIEW_SERVER"), httpClient.StandardClient(), logger)
 
 	tests := map[string]struct {
 		Year             string
