@@ -158,6 +158,22 @@ func TestHandleGetTaxes(t *testing.T) {
 				assert.Equal(t, test.ExpectedResponse, string(body))
 			}
 
+			if test.ExpectedStatusCode == http.StatusBadRequest {
+				mockBracketCache.AssertNotCalled(t, "Get", mock.Anything, test.Year)
+				mockBracketClient.AssertNotCalled(t, "GetBrackets", mock.Anything, test.Year)
+				mockBracketCache.AssertNotCalled(t, "Save", mock.Anything, test.Year, test.Brackets)
+			}
+
+			if len(test.CachedBrackets) > 0 {
+				mockBracketClient.AssertNotCalled(t, "GetBrackets", mock.Anything, test.Year)
+				mockBracketCache.AssertNotCalled(t, "Save", mock.Anything, test.Year, test.Brackets)
+			}
+
+			if test.ExpectedStatusCode == http.StatusInternalServerError ||
+				test.ExpectedStatusCode == http.StatusNotFound {
+				mockBracketCache.AssertNotCalled(t, "Save", mock.Anything, test.Year, test.Brackets)
+			}
+
 			mockBracketClient.AssertExpectations(t)
 			mockBracketCache.AssertExpectations(t)
 		})

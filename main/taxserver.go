@@ -79,7 +79,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (resp
 		if response == taxbracket.NotFound {
 			notFoundMessage := fmt.Sprintf("tax year not found %s", year)
 			s.Logger.Log("requestID", common.GetRequestID(ctx), "msg", notFoundMessage)
-			return &handlerResponse{Body: &taxServerResponse{notFoundMessage}, Status: http.StatusNotFound}, nil
+			return &handlerResponse{http.StatusNotFound, &taxServerResponse{notFoundMessage}}, nil
 		}
 
 		s.BracketCache.Save(ctx, year, brackets)
@@ -87,7 +87,7 @@ func (s *taxServer) handleGetTaxes(w http.ResponseWriter, r *http.Request) (resp
 	}
 
 	s.Logger.Log("requestID", common.GetRequestID(ctx), "msg", "calculated taxes", "year", year, "salary", salaryF, "taxes", taxes)
-	return &handlerResponse{Body: taxes, Status: http.StatusOK}, nil
+	return &handlerResponse{http.StatusOK, taxes}, nil
 }
 
 // writeJSON sets status header and
