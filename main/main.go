@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/go-redis/redis/v8"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/ybakhan/tax-calculator/cache"
@@ -21,9 +21,9 @@ import (
 //	@version		1.0
 //	@description	REST API for calculating taxes
 
-//	@contact.name	Yasser Khan
-//	@contact.url	http://github.com/ybakhan
-//	@contact.email	ybakhan@gmail.com
+// @contact.name	Yasser Khan
+// @contact.url	http://github.com/ybakhan
+// @contact.email	ybakhan@gmail.com
 func main() {
 	terminate := make(chan os.Signal, 1)
 	signal.Notify(terminate, os.Interrupt, syscall.SIGTERM)

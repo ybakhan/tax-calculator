@@ -2,14 +2,14 @@ package testcommon
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )
 
 func ReadTaxBrackets(t *testing.T, path string) *taxbracket.Brackets {
-	file, _ := ioutil.ReadFile(path)
+	file, _ := os.ReadFile(path)
 	var taxBrackets taxbracket.Brackets
 	err := json.Unmarshal([]byte(file), &taxBrackets)
 	if err != nil {

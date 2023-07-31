@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/ybakhan/tax-calculator/cache"
 	"github.com/ybakhan/tax-calculator/taxbracket"
 )

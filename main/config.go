@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -40,7 +40,7 @@ type ApiTokenConfig struct {
 }
 
 func readConfig() *Config {
-	data, err := ioutil.ReadFile("config.yml")
+	data, err := os.ReadFile("config.yml")
 	if err != nil {
 		panic(err)
 	}

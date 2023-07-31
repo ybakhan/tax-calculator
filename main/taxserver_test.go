@@ -6,12 +6,12 @@ import (
 
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -149,7 +149,7 @@ func TestHandleGetTaxes(t *testing.T) {
 			result := recorder.Result()
 			assert.Equal(t, test.ExpectedStatusCode, result.StatusCode)
 
-			body, _ := ioutil.ReadAll(result.Body)
+			body, _ := io.ReadAll(result.Body)
 			if test.ExpectedTaxes != nil {
 				var taxes taxcalculator.TaxCalculation
 				json.Unmarshal(body, &taxes)

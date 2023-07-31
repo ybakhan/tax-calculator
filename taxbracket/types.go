@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 )
 
 // GetBracketsResponse represents response type of get tax brackets function
