@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
@@ -21,9 +21,9 @@ import (
 //	@version		1.0
 //	@description	REST API for calculating taxes
 
-//	@contact.name	Yasser Khan
-//	@contact.url	http://github.com/ybakhan
-//	@contact.email	ybakhan@gmail.com
+// @contact.name	Yasser Khan
+// @contact.url	http://github.com/ybakhan
+// @contact.email	ybakhan@gmail.com
 func main() {
 	terminate := make(chan os.Signal, 1)
 	signal.Notify(terminate, os.Interrupt, syscall.SIGTERM)
@@ -34,30 +34,27 @@ func main() {
 
 	redis := initializeRedis(config, logger)
 
-	// Create a wait group to wait for the cleanup code to finish
-	wg := sync.WaitGroup{}
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		// Wait for the terminate signal
 		<-terminate
-
 		// disconnect redis
-		err := redis.Close()
-		if err != nil {
+		if err := redis.Close(); err != nil {
 			logger.Log("error", err, "msg", "error closing Redis connection")
 			return
 		}
 		logger.Log("msg", "Redis connection closed")
 	}()
 
-	initializeTaxServer(config, redis, logger)
-
-	wg.Wait()
-	logger.Log("msg", "terminating tax-calculator")
+	if err := initializeTaxServer(config, redis, logger); err != nil {
+		if err != http.ErrServerClosed {
+			logger.Log("error", err, "msg", "server encountered an error")
+		} else {
+			logger.Log("msg", "terminating tax-calculator")
+			os.Exit(1)
+		}
+	}
 }
 
-func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.Logger) {
+func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.Logger) error {
 	httpClient := retryablehttp.NewClient()
 	httpClient.HTTPClient.Timeout = time.Duration(config.HTTPClient.TimeoutMs) * time.Millisecond
 	httpClient.RetryWaitMin = time.Duration(config.HTTPClient.Retry.Wait.MinMs) * time.Millisecond
@@ -69,7 +66,7 @@ func initializeTaxServer(config *Config, redisClient *redis.Client, logger log.L
 	bracketCache := initializeBracketCache(redisClient, logger)
 
 	server := &taxServer{listenAddress, bracketClient, bracketCache, &config.ApiToken, logger}
-	server.Start()
+	return server.Start()
 }
 
 func initializeBracketCache(redisClient *redis.Client, logger log.Logger) cache.BracketCache {
